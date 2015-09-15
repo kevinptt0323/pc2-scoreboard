@@ -29,10 +29,11 @@ def readCommand(argv):
 	return args
 
 def configure(options):
-	global TEAM_NUM, PROBLEM_NUM, FREEZE_TIME
+	global TEAM_NUM, PROBLEM_NUM, FREEZE_TIME, INDENT
 	TEAM_NUM = options.TEAM_NUM
 	PROBLEM_NUM = options.PROBLEM_NUM
 	FREEZE_TIME = options.FREEZE_TIME
+	INDENT = options.INDENT
 
 def parse(source):
 	class Run:
@@ -153,9 +154,10 @@ def run(actions):
 def output(target, status):
 	result = dict()
 	with open(options.target, 'w') as fout:
+		global INDENT
 		result["status"] = [team.toJSON() for team in status]
 		result["generateTime"] = time.strftime("%Y/%m/%d %X")
-		fout.write(json.dumps(result))
+		fout.write(json.dumps(result, indent=INDENT))
 
 if __name__ == '__main__':
 	options = readCommand( sys.argv[1:] ) # Get game components based on input
