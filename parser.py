@@ -138,9 +138,9 @@ def run(actions):
 			obj["solvedN"] = self.solvedN
 			obj["submitN"] = self.submitN[1:]
 			obj["penalty"] = self.penalty[1:]
-			obj["solved"] = self.solved[1:]
-			obj["pending"] = self.pending[1:]
-			obj["firstBlood"] = self.firstBlood[1:]
+			obj["solved"] = map(int, self.solved[1:])
+			obj["pending"] = map(int, self.pending[1:])
+			obj["firstBlood"] = map(int, self.firstBlood[1:])
 			return obj
 
 	global TEAM_NUM
