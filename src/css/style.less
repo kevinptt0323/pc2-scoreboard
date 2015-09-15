@@ -1,3 +1,28 @@
-#scoreboard {
+body {
 	margin: 20px;
+	font-size: 1.2em;
+}
+
+#loader {
+	position: absolute;
+	top: 20px;
+	right: 30px;
+}
+
+#scoreboard {
+	td+td+td+td+td {
+		width: 6%;
+	}
+  .pending:not(.solved) {
+		background: lighten(#ff0, 40%);
+	}
+  .submitted:not(.pending):not(.solved) {
+		background: lighten(#f00, 40%);
+	}
+  .solved:not(.firstBlood) {
+		background: lighten(#0f0, 40%);
+	}
+  .solved.firstBlood {
+		background: lighten(#0c0, 30%);
+	}
 }

@@ -62,8 +62,10 @@ var Ranking = React.createClass({
       return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty);
     });
     ranking = [];
-    for(var i=0; i<_status.length; i++) {
-      ranking.push(<Team rank={i+1} result={_status[i]} />)
+    for(var i=0, j=0; i<_status.length; i++) {
+      if( _status[i].solvedN != _status[j].solvedN || _status[i].totalPenalty != _status[j].totalPenalty )
+        j = i;
+      ranking.push(<Team rank={j+1} result={_status[i]} />)
     }
     return (
       <tbody>
@@ -79,6 +81,7 @@ var Ranking = React.createClass({
     return { _status: [] };
   },
   loadJSON: function() {
+    $("#loader").fadeIn(500)
     $.ajax({
       url: this.props.statusUrl,
       dataType: 'json',
@@ -88,6 +91,13 @@ var Ranking = React.createClass({
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.statusUrl, status, err.toString());
+      }.bind(this),
+      complete: function() {
+        $("#loader").fadeOut(500);
+        var loadJSON = this.loadJSON;
+        setTimeout(function() {
+          loadJSON();
+        }, 10000);
       }.bind(this)
     });
   }
@@ -120,9 +130,9 @@ var Team = React.createClass({
   },
   componentDidMount: function() {
     var $elem = $(this.getDOMNode());
-    $elem.find(".pending:not(.solved)").addClass("warning").prepend('<i class="yellow wait icon"></i>');
-    $elem.find(".submitted:not(.pending):not(.solved)").addClass("negative").prepend('<i class="red close icon"></i>');
-    $elem.find(".solved").addClass("positive").prepend('<i class="green checkmark icon"></i>');
+    $elem.find(".pending:not(.solved)").prepend('<i class="yellow wait icon"></i>');
+    $elem.find(".submitted:not(.pending):not(.solved)").prepend('<i class="red close icon"></i>');
+    $elem.find(".solved").prepend('<i class="green checkmark icon"></i>');
   }
 });
 
