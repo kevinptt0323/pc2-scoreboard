@@ -5,21 +5,22 @@ var Scoreboard = React.createClass({
         <div>Scoreboard Time: {this.state.stateTime}</div>
         <table>
           <Header settingsUrl={this.props.settingsUrl} />
-          <Ranking _status={this.state._status} />
+          <Ranking _status={this.state._status} _teams={this.state._teams} />
         </table>
       </div>
     );
   },
   componentDidMount: function() {
-    this.loadJSON();
+    this.loadTeams();
+    this.loadStatus();
     var $elem = $(this.getDOMNode()).children("table");
     $elem.addClass("ui striped table");
-    $("#autoReload").change(this.loadJSON);
+    $("#autoReload").change(this.loadStatus);
   },
   getInitialState: function() {
     return { _status: [], stateTime: "----/--/-- --:--:--" };
   },
-  loadJSON: function() {
+  loadStatus: function() {
     if( !$("#autoReload").prop('checked') ) return;
     $("#loader").fadeIn(500);
     $.ajax({
@@ -34,7 +35,20 @@ var Scoreboard = React.createClass({
       }.bind(this),
       complete: function() {
         $("#loader").fadeOut(500);
-        setTimeout(this.loadJSON, 10000);
+        setTimeout(this.loadStatus, 10000);
+      }.bind(this)
+    });
+  },
+  loadTeams: function() {
+    $.ajax({
+      url: this.props.teamsUrl,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({_teams: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.teamsUrl, status, err.toString());
       }.bind(this)
     });
   }
@@ -63,9 +77,9 @@ var Header = React.createClass({
     return { _settings: {} };
   },
   componentDidMount: function() {
-    this.loadJSON();
+    this.loadSettings();
   },
-  loadJSON: function() {
+  loadSettings: function() {
     $.ajax({
       url: this.props.settingsUrl,
       dataType: 'json',
@@ -82,7 +96,10 @@ var Header = React.createClass({
 
 var Ranking = React.createClass({
   render: function() {
-    var _status = this.props._status;
+    var
+      _status = this.props._status,
+      _teams = this.props._teams;
+
     _status.sort(function(a, b) {
       return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty);
     });
@@ -90,7 +107,15 @@ var Ranking = React.createClass({
     for(var i=0, j=0; i<_status.length; i++) {
       if( _status[i].solvedN != _status[j].solvedN || _status[i].totalPenalty != _status[j].totalPenalty )
         j = i;
-      ranking.push(<Team rank={j+1} result={_status[i]} />)
+      var teamName = "team"+_status[i].teamID;
+      for(var t in _teams) {
+        if( _teams[t].teamID == _status[i].teamID ) {
+          teamName = _teams[t].name || teamName;
+          console.log(teamName);
+          break;
+        }
+      }
+      ranking.push(<Team rank={j+1} result={_status[i]} teamName={teamName} />)
     }
     return (
       <tbody>
@@ -107,7 +132,7 @@ var Team = React.createClass({
     var cx = React.addons.classSet;
     var tds = [
       <td>{this.props.rank}</td>,
-      <td>{"team"+result.teamID}</td>,
+      <td>{this.props.teamName}</td>,
       <td>{result.solvedN}</td>,
       <td>{result.totalPenalty}</td>
     ];
@@ -139,7 +164,7 @@ var Team = React.createClass({
 });
 
 React.render(
-  <Scoreboard settingsUrl="settings.json" statusUrl="status.json" />,
+  <Scoreboard settingsUrl="settings.json" teamsUrl="teams.json" statusUrl="status.json" />,
   document.getElementById('scoreboard')
 )
 
