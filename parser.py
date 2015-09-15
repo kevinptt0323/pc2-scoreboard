@@ -134,7 +134,7 @@ def run(actions):
 		def toJSON(self):
 			obj = dict()
 			obj["teamID"] = self.teamID
-			obj["penalty"] = self.totalPenalty
+			obj["totalPenalty"] = self.totalPenalty
 			obj["solvedN"] = self.solvedN
 			obj["submitN"] = self.submitN[1:]
 			obj["penalty"] = self.penalty[1:]
