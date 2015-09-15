@@ -2,16 +2,42 @@ var Scoreboard = React.createClass({
   render: function() {
     return (
       <div>
+        <div>Scoreboard Time: {this.state.stateTime}</div>
         <table>
           <Header settingsUrl={this.props.settingsUrl} />
-          <Ranking statusUrl={this.props.statusUrl} />
+          <Ranking _status={this.state._status} />
         </table>
       </div>
     );
   },
   componentDidMount: function() {
+    this.loadJSON();
     var $elem = $(this.getDOMNode()).children("table");
     $elem.addClass("ui striped table");
+  },
+  getInitialState: function() {
+    return { _status: [], stateTime: "----/--/-- --:--:--" };
+  },
+  loadJSON: function() {
+    $("#loader").fadeIn(500)
+    $.ajax({
+      url: this.props.statusUrl,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({_status: data["status"], stateTime: data["generateTime"]});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.statusUrl, status, err.toString());
+      }.bind(this),
+      complete: function() {
+        $("#loader").fadeOut(500);
+        var loadJSON = this.loadJSON;
+        setTimeout(function() {
+          loadJSON();
+        }, 10000);
+      }.bind(this)
+    });
   }
 });
 
@@ -57,7 +83,7 @@ var Header = React.createClass({
 
 var Ranking = React.createClass({
   render: function() {
-    _status = this.state._status;
+    var _status = this.props._status;
     _status.sort(function(a, b) {
       return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty);
     });
@@ -74,33 +100,6 @@ var Ranking = React.createClass({
     );
 //  {JSON.stringify(this.state._status, null, '  ')}
   },
-  componentDidMount: function() {
-    this.loadJSON();
-  },
-  getInitialState: function() {
-    return { _status: [] };
-  },
-  loadJSON: function() {
-    $("#loader").fadeIn(500)
-    $.ajax({
-      url: this.props.statusUrl,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({_status: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.statusUrl, status, err.toString());
-      }.bind(this),
-      complete: function() {
-        $("#loader").fadeOut(500);
-        var loadJSON = this.loadJSON;
-        setTimeout(function() {
-          loadJSON();
-        }, 10000);
-      }.bind(this)
-    });
-  }
 });
 
 var Team = React.createClass({

@@ -1,6 +1,6 @@
 import argparse
 import json
-import sys, re
+import sys, re, time
 
 TEAM_NUM = None
 PROBLEM_NUM = 12
@@ -151,8 +151,11 @@ def run(actions):
 	return result[1:]
 
 def output(target, status):
+	result = dict()
 	with open(options.target, 'w') as fout:
-		fout.write(json.dumps([team.toJSON() for team in status]))
+		result["status"] = [team.toJSON() for team in status]
+		result["generateTime"] = time.strftime("%Y/%m/%d %X")
+		fout.write(json.dumps(result))
 
 if __name__ == '__main__':
 	options = readCommand( sys.argv[1:] ) # Get game components based on input
