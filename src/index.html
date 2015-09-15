@@ -19,8 +19,12 @@
 			<div id="header" class="ui huge header">
 			2015 ACM-ICPC Taiwan Online Programming Contest
 			</div>
-			<div id="loader">
-				<div class="ui active inline loader"></div>&nbsp;&nbsp;Reloading...
+			<div id="loader_container">
+				<input type="checkbox" name="autoReload" id="autoReload" checked/>
+				<label for="autoReload">Auto reload per 10 seconds</label>
+				<div id="loader">
+					<div class="ui active inline loader"></div>&nbsp;&nbsp;Reloading...
+				</div>
 			</div>
 		</div>
 		<div id="scoreboard"></div>

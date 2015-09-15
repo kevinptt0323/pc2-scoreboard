@@ -14,11 +14,13 @@ var Scoreboard = React.createClass({
     this.loadJSON();
     var $elem = $(this.getDOMNode()).children("table");
     $elem.addClass("ui striped table");
+    $("#autoReload").change(this.loadJSON);
   },
   getInitialState: function() {
     return { _status: [], stateTime: "----/--/-- --:--:--" };
   },
   loadJSON: function() {
+    if( !$("#autoReload").prop('checked') ) return;
     $("#loader").fadeIn(500);
     $.ajax({
       url: this.props.statusUrl,
