@@ -1,0 +1,31 @@
+# --------------------
+# vim Files
+# --------------------
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+# --------------------
+# Node Files
+# --------------------
+node_modules/
+
+# --------------------
+# Bower Files
+# --------------------
+.bower-*/
+bower_components
+
+# --------------------
+# App Files
+# --------------------
+
+40x.html
+50x.html
+favicon.ico
+dist/
+ignore/
+
