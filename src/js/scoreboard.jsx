@@ -3,6 +3,10 @@ var Scoreboard = React.createClass({
     return (
       <div>
         <div>Scoreboard Time: {this.state.stateTime}</div>
+        <div id="countdown" className="ui indicating progress">
+          <div className="bar"> </div>
+          <div className="label"> </div>
+        </div>
         <table>
           <Header settingsUrl={this.props.settingsUrl} />
           <Ranking _status={this.state._status} />
@@ -14,12 +18,19 @@ var Scoreboard = React.createClass({
     this.loadJSON();
     var $elem = $(this.getDOMNode()).children("table");
     $elem.addClass("ui striped table");
+    $("#countdown").progress({
+      total: 10,
+      text: {
+        active  : '{left} second(s) to refresh',
+        success  : '0 second(s) to refresh'
+      }
+    });
   },
   getInitialState: function() {
     return { _status: [], stateTime: "----/--/-- --:--:--" };
   },
   loadJSON: function() {
-    $("#loader").fadeIn(500)
+    $("#loader").fadeIn(500);
     $.ajax({
       url: this.props.statusUrl,
       dataType: 'json',
@@ -32,10 +43,18 @@ var Scoreboard = React.createClass({
       }.bind(this),
       complete: function() {
         $("#loader").fadeOut(500);
-        var loadJSON = this.loadJSON;
-        setTimeout(function() {
-          loadJSON();
-        }, 10000);
+        $("#countdown").progress('set value', 0);
+        var countdown = function(time, cb) {
+          if( time == 0 ) {
+            cb();
+          } else {
+            setTimeout(function() {
+              $("#countdown").progress('increment');
+              countdown(time-1, cb);
+            }, 1000);
+          }
+        }
+        countdown(10, this.loadJSON);
       }.bind(this)
     });
   }
