@@ -15,7 +15,8 @@
   "dependencies": {
     "jquery": "~2.1.4",
     "normalize-css": "~3.0.3",
-    "react": "~0.13.3"
+    "react": "~0.13.3",
+    "semantic": "~2.1.4"
   },
   "overrides": {
     "jquery": {
@@ -30,6 +31,12 @@
         "react.min.js",
         "react-with-addons.js",
         "react-with-addons.min.js"
+      ]
+    },
+    "semantic": {
+      "main": [
+        "dist/semantic.min.css",
+        "dist/semantic.min.js"
       ]
     }
   }
