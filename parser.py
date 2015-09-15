@@ -72,7 +72,7 @@ def parse(source):
 					a, b = x.strip(' ').split('=')
 					judge[a] = b
 				for run in result:
-					if run.runid == int(judge["id"]) and run.time <= FREEZE_TIME:
+					if run.runid == int(judge["id"]) and (FREEZE_TIME == -1 or run.time <= FREEZE_TIME):
 						run.judge(judge["solved"]=="true")
 		result.sort()
 		solved = [False] * (PROBLEM_NUM+1)
