@@ -28,7 +28,7 @@ var paths = {
     dest: './dist/lib'
   },
   fonts: {
-    src: 'bower_components/semantic-ui/src/themes/default/**',
+    src: 'bower_components/semantic/src/themes/default/**',
     dest: './dist/lib'
   }
 };
@@ -70,9 +70,9 @@ gulp.task('libs', ['libs-fonts'], function() {
 });
 
 gulp.task('libs-fonts', function() {
-  return gulp.src(paths.fonts.src, { base: './bower_components/semantic-ui/src' })
+  return gulp.src(paths.fonts.src, { base: './bower_components/semantic/src' })
     .pipe(changed(paths.fonts.dest))
     .pipe(gulp.dest(paths.fonts.dest));
 });
 
-gulp.task('default', ['web-pages', 'Javascript', 'React', 'Less', 'libs']);
+gulp.task('default', ['web-pages', 'Javascript', 'React', 'Less', 'libs', 'libs-fonts']);

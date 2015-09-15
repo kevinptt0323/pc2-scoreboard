@@ -8,6 +8,10 @@ var Scoreboard = React.createClass({
         </table>
       </div>
     );
+  },
+  componentDidMount: function() {
+    var $elem = $(this.getDOMNode()).children("table");
+    $elem.addClass("ui striped table");
   }
 });
 
@@ -113,6 +117,12 @@ var Team = React.createClass({
         {tds}
       </tr>
     );
+  },
+  componentDidMount: function() {
+    var $elem = $(this.getDOMNode());
+    $elem.find(".pending:not(.solved)").addClass("warning").prepend('<i class="yellow wait icon"></i>');
+    $elem.find(".submitted:not(.pending):not(.solved)").addClass("negative").prepend('<i class="red close icon"></i>');
+    $elem.find(".solved").addClass("positive").prepend('<i class="green checkmark icon"></i>');
   }
 });
 
