@@ -29,3 +29,8 @@ favicon.ico
 dist/
 ignore/
 
+# -------------------
+# Python files and configs
+# -------------------
+*.pyc
+config.py
