@@ -14,7 +14,7 @@ var Scoreboard = React.createClass({
     this.loadTeams();
     this.loadStatus();
     var $elem = $(this.getDOMNode()).children("table");
-    $elem.addClass("ui striped table");
+    $elem.addClass("ui striped unstackable table");
     $("#autoReload").change(this.loadStatus);
   },
   getInitialState: function() {
