@@ -1,0 +1,32 @@
+body {
+  margin: 20px;
+  font-size: 1.2em;
+}
+#loader_container {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  text-align: right;
+  line-height: 200%;
+}
+#scoreboard .ui.progress .bar {
+  transition-duration: .9s;
+}
+#scoreboard td + td + td + td + td {
+  width: 6%;
+}
+#scoreboard td {
+  transition: background 1s;
+}
+#scoreboard .pending:not(.solved) {
+  background: #ffffcc;
+}
+#scoreboard .submitted:not(.pending):not(.solved) {
+  background: #ffcccc;
+}
+#scoreboard .solved:not(.firstBlood) {
+  background: #ccffcc;
+}
+#scoreboard .solved.firstBlood {
+  background: #66ff66;
+}
