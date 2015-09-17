@@ -1,13 +1,17 @@
 {
   "name": "pc2-scoreboard",
   "version": "0.1.0",
-  "description": "",
+  "description": "The system to parse pc^2 system result to a json file.",
   "main": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kevin Lin <kevinptt0323@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kevinptt0323/pc2-scoreboard.git"
+  },
   "devDependencies": {
     "del": "^2.0.2",
     "gulp": "^3.9.0",
