@@ -4,7 +4,7 @@ var Scoreboard = React.createClass({
       <div>
         <div>Scoreboard Time: {this.state.stateTime}</div>
         <table>
-          <Header settingsUrl={this.props.settingsUrl} />
+          <TableHeader settingsUrl={this.props.settingsUrl} />
           <Ranking _status={this.state._status} _teams={this.state._teams} />
         </table>
       </div>
@@ -35,7 +35,7 @@ var Scoreboard = React.createClass({
       }.bind(this),
       complete: function() {
         $("#loader").fadeOut(500);
-        setTimeout(this.loadStatus, 10000);
+        setTimeout(this.loadStatus, 30000);
       }.bind(this)
     });
   },
@@ -54,8 +54,9 @@ var Scoreboard = React.createClass({
   }
 });
 
-var Header = React.createClass({
+var TableHeader = React.createClass({
   render: function() {
+    document.title = this.state._settings.contestName;
     var ths = [
       <th>Rank</th>,
       <th>Name</th>,
