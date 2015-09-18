@@ -13,3 +13,5 @@ call('rm -rf report.Extract_Replay_Runs.*.files', shell=True)
 call(('mv report.Extract_Replay_Runs.*.txt %s' % os.path.join(ORI_DIR, REPORT)), shell=True)
 os.chdir(ORI_DIR)
 call('python parser.py -t %d -f %d %s %s' % (config.TEAM_NUM, config.FREEZE_TIME, REPORT, STATUS), shell=True)
+call('rm %s' % REPORT, shell=True)
+
