@@ -4,8 +4,9 @@ var Scoreboard = React.createClass({
       <div>
         Current Time: <Clock />
         <div>Scoreboard Time: {this.state.stateTime}</div>
+        <div className="ui center aligned red header">The scoreboard will be freezed after {this.state._settings.freezeTime} minutes.</div>
         <table>
-          <TableHeader settingsUrl={this.props.settingsUrl} />
+          <TableHeader _settings={this.state._settings} />
           <Ranking _status={this.state._status} _teams={this.state._teams} />
         </table>
       </div>
@@ -14,12 +15,13 @@ var Scoreboard = React.createClass({
   componentDidMount: function() {
     this.loadTeams();
     this.loadStatus();
+    this.loadSettings();
     var $elem = $(this.getDOMNode()).children("table");
     $elem.addClass("ui striped unstackable table");
     $("#autoReload").change(this.loadStatus);
   },
   getInitialState: function() {
-    return { _status: [], stateTime: "----/--/-- --:--:--" };
+    return { _status: [], _settings: [], _teams: [], stateTime: "----/--/-- --:--:--" };
   },
   loadStatus: function() {
     if( !$("#autoReload").prop('checked') ) return;
@@ -50,6 +52,19 @@ var Scoreboard = React.createClass({
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.teamsUrl, status, err.toString());
+      }.bind(this)
+    });
+  },
+  loadSettings: function() {
+    $.ajax({
+      url: this.props.settingsUrl,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({_settings: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.settingsUrl, status, err.toString());
       }.bind(this)
     });
   }
@@ -90,14 +105,14 @@ var Clock = React.createClass({
 
 var TableHeader = React.createClass({
   render: function() {
-    document.title = this.state._settings.contestName;
+    document.title = this.props._settings.contestName || "";
     var ths = [
       <th>Rank</th>,
       <th>Name</th>,
       <th>Solved</th>,
       <th>Time</th>
     ];
-    for(var i=0; i<this.state._settings.problemNum; i++) {
+    for(var i=0; i<this.props._settings.problemNum; i++) {
       ths.push(<th>{String.fromCharCode(65+i)}</th>);
     }
     return (
@@ -107,25 +122,6 @@ var TableHeader = React.createClass({
         </tr>
       </thead>
     );
-  },
-  getInitialState: function() {
-    return { _settings: {} };
-  },
-  componentDidMount: function() {
-    this.loadSettings();
-  },
-  loadSettings: function() {
-    $.ajax({
-      url: this.props.settingsUrl,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({_settings: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.settingsUrl, status, err.toString());
-      }.bind(this)
-    });
   }
 });
 
@@ -136,7 +132,7 @@ var Ranking = React.createClass({
       _teams = this.props._teams;
 
     _status.sort(function(a, b) {
-      return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty);
+      return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty) || (a.teamID-b.teamID);
     });
     ranking = [];
     for(var i=0, j=0; i<_status.length; i++) {
