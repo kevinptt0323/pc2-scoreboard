@@ -12,6 +12,6 @@ call(['sh', 'bin/pc2report', '--contestPassword', config.PASSWD, '--profile', '1
 call('rm -rf report.Extract_Replay_Runs.*.files', shell=True)
 call(('mv report.Extract_Replay_Runs.*.txt %s' % os.path.join(ORI_DIR, REPORT)), shell=True)
 os.chdir(ORI_DIR)
-call('python parser.py -t %d -f %d %s %s' % (config.TEAM_NUM, config.FREEZE_TIME, REPORT, STATUS), shell=True)
+call('python parser.py -t %d -p %d -f %d %s %s' % (config.TEAM_NUM, config.PROBLEM_NUM, config.FREEZE_TIME, REPORT, STATUS), shell=True)
 call('rm %s' % REPORT, shell=True)
 
