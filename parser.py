@@ -126,8 +126,10 @@ def run(actions):
 							self.solvedN += 1
 							self.totalPenalty += self.submitN[run.probID] * PENALTY_PER_SUBMIT + self.penalty[run.probID]
 							self.firstBlood[run.probID] = run.firstBlood
-						elif not run.pending:
+						else:
 							self.submitN[run.probID] += 1
+							if run.pending:
+								self.pending[run.probID] = True
 					else:
 						self.submitN[run.probID] += 1
 						self.pending[run.probID] = True
