@@ -112,7 +112,6 @@ var Ranking = React.createClass({
       for(var t in _teams) {
         if( _teams[t].teamID == _status[i].teamID ) {
           teamName = _teams[t].name || teamName;
-          console.log(teamName);
           break;
         }
       }
