@@ -26,7 +26,7 @@ var Scoreboard = React.createClass({
   },
   loadStatus: function() {
     if( !$("#autoReload").prop('checked') ) return;
-    $("#loader").fadeIn(500);
+    $(".loader").fadeIn(500);
     $.ajax({
       url: this.props.statusUrl,
       dataType: 'json',
@@ -38,7 +38,7 @@ var Scoreboard = React.createClass({
         console.error(this.props.statusUrl, status, err.toString());
       }.bind(this),
       complete: function() {
-        $("#loader").fadeOut(500);
+        $(".loader").fadeOut(500);
         setTimeout(this.loadStatus, 30000);
       }.bind(this)
     });

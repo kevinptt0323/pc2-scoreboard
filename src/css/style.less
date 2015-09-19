@@ -8,7 +8,9 @@ body {
 	top: 20px;
 	right: 30px;
 	text-align: right;
-	line-height: 200%;
+	.loader {
+		top: 70px;
+	}
 }
 
 #scoreboard {
@@ -17,6 +19,7 @@ body {
 	}
 	th, td {
 		text-align: center;
+		transition: background 1s;
 		&:nth-child(2) {
 			text-align: left;
 		}
@@ -32,19 +35,16 @@ body {
 	td+td+td+td+td {
 		table-layout: fixed;
 	}
-	td {
-		transition: background 1s;
-	}
-  .pending:not(.solved) {
+	.pending:not(.solved) {
 		background: lighten(#ff0, 40%);
 	}
-  .submitted:not(.pending):not(.solved) {
+	.submitted:not(.pending):not(.solved) {
 		background: lighten(#f00, 40%);
 	}
-  .solved:not(.firstBlood) {
+	.solved:not(.firstBlood) {
 		background: lighten(#0f0, 40%);
 	}
-  .solved.firstBlood {
+	.solved.firstBlood {
 		background: lighten(#0c0, 30%);
 	}
 }
