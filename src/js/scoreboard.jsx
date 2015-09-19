@@ -8,6 +8,7 @@ var Scoreboard = React.createClass({
         <table>
           <TableHeader _settings={this.state._settings} />
           <Ranking _status={this.state._status} _teams={this.state._teams} />
+          <TableHeader _settings={this.state._settings} />
         </table>
       </div>
     );
@@ -17,7 +18,7 @@ var Scoreboard = React.createClass({
     this.loadStatus();
     this.loadSettings();
     var $elem = $(this.getDOMNode()).children("table");
-    $elem.addClass("ui striped unstackable table");
+    $elem.addClass("ui striped unstackable selectable table");
     $("#autoReload").change(this.loadStatus);
   },
   getInitialState: function() {
