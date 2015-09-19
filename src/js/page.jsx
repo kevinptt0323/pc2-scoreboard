@@ -1,7 +1,7 @@
 var Header = React.createClass({
   render: function() {
     return (
-      <div className="ui huge header">
+      <div>
         2015 ACM-ICPC Taiwan Online Programming Contest
       </div>
     );
