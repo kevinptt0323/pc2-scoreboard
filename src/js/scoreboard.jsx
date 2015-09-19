@@ -2,6 +2,7 @@ var Scoreboard = React.createClass({
   render: function() {
     return (
       <div>
+        Current Time: <Clock />
         <div>Scoreboard Time: {this.state.stateTime}</div>
         <table>
           <TableHeader settingsUrl={this.props.settingsUrl} />
@@ -51,6 +52,39 @@ var Scoreboard = React.createClass({
         console.error(this.props.teamsUrl, status, err.toString());
       }.bind(this)
     });
+  }
+});
+
+var Clock = React.createClass({
+  render: function() {
+    var options = {
+      timeZone: 8,
+      hour12: false
+    };
+    return (
+      <span>{this.formatDate(this.state.time)}</span>
+    );
+  },
+  getInitialState: function() {
+    return {time: new Date()};
+  },
+  componentDidMount: function() {
+    this.timer = setInterval(this.tick, 1000);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.timer);
+  },
+  tick: function() {
+    this.setState({time: new Date()});
+  },
+  formatDate: function(date) {
+    var month = date.getMonth() + 1;
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+    month = month < 10 ? '0'+month : month;
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    seconds = seconds < 10 ? '0'+seconds : seconds;
+    return date.getFullYear() + "/" + month + "/" + date.getDate() + "  " + date.getHours() + ':' + minutes + ':' + seconds;
   }
 });
 
