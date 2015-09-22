@@ -5,7 +5,7 @@ var Scoreboard = React.createClass({
         Current Time: <Clock />
         <div>Scoreboard Time: {this.state.stateTime}</div>
         <div className="ui center aligned red header">The scoreboard will be freezed after {this.state._settings.freezeTime} minutes.</div>
-        <table>
+        <table className="ui striped unstackable selectable table">
           <TableHeader _settings={this.state._settings} />
           <Ranking _status={this.state._status} _teams={this.state._teams} />
           <TableHeader _settings={this.state._settings} />
@@ -17,15 +17,16 @@ var Scoreboard = React.createClass({
     this.loadTeams();
     this.loadStatus();
     this.loadSettings();
-    var $elem = $(this.getDOMNode()).children("table");
-    $elem.addClass("ui striped unstackable selectable table");
-    $("#autoReload").change(this.loadStatus);
+    document.getElementById('autoReload').onchange = this.loadStatus;
   },
   getInitialState: function() {
     return { _status: [], _settings: [], _teams: [], stateTime: "----/--/-- --:--:--" };
   },
   loadStatus: function() {
-    if( !$("#autoReload").prop('checked') ) return;
+    if( !$("#autoReload").prop('checked') ) {
+      stopTimeout(this.tick);
+      return;
+    }
     $(".loader").fadeIn(500);
     $.ajax({
       url: this.props.statusUrl,
@@ -39,7 +40,7 @@ var Scoreboard = React.createClass({
       }.bind(this),
       complete: function() {
         $(".loader").fadeOut(500);
-        setTimeout(this.loadStatus, 30000);
+        this.tick = setTimeout(this.loadStatus, 30000);
       }.bind(this)
     });
   },
@@ -47,7 +48,6 @@ var Scoreboard = React.createClass({
     $.ajax({
       url: this.props.teamsUrl,
       dataType: 'json',
-      cache: false,
       success: function(data) {
         this.setState({_teams: data});
       }.bind(this),
@@ -60,7 +60,6 @@ var Scoreboard = React.createClass({
     $.ajax({
       url: this.props.settingsUrl,
       dataType: 'json',
-      cache: false,
       success: function(data) {
         this.setState({_settings: data});
       }.bind(this),
