@@ -138,14 +138,18 @@ var Ranking = React.createClass({
     for(var i=0, j=0; i<_status.length; i++) {
       if( _status[i].solvedN != _status[j].solvedN || _status[i].totalPenalty != _status[j].totalPenalty )
         j = i;
-      var teamName = "team"+_status[i].teamID;
+      var
+        teamName = "team"+_status[i].teamID,
+        schoolName = ""
+      ;
       for(var t in _teams) {
         if( _teams[t].teamID == _status[i].teamID ) {
           teamName = _teams[t].name || teamName;
+          schoolName = _teams[t].school || schoolName;
           break;
         }
       }
-      ranking.push(<Team rank={j+1} result={_status[i]} teamName={teamName} />)
+      ranking.push(<Team rank={j+1} result={_status[i]} teamName={teamName} schoolName={schoolName} />)
     }
     return (
       <tbody>
@@ -162,7 +166,7 @@ var Team = React.createClass({
     var cx = React.addons.classSet;
     var tds = [
       <td>{this.props.rank}</td>,
-      <td>{this.props.teamName}</td>,
+      <td><span className="teamName">{this.props.teamName}</span><span className="schoolName">{this.props.schoolName}</span></td>,
       <td>{result.solvedN}</td>,
       <td>{result.totalPenalty}</td>
     ];
@@ -173,23 +177,26 @@ var Team = React.createClass({
         'firstBlood': result.firstBlood[i],
         'pending': result.pending[i]
       });
-      tds.push(<td className={cls_status}><i className="icon"></i>&nbsp;{result.submitN[i]+"/"+(result.solved[i] ? result.penalty[i] : "--")}</td>);
+      var cls_icon = "icon";
+      if( result.pending[i] && !result.solved[i] ) {
+        cls_icon = "yellow wait icon";
+      } else if( result.submitN[i]>0 && !result.pending[i] && !result.solved[i] ) {
+        cls_icon = "red close icon";
+      } else if ( result.solved[i] ) {
+        cls_icon = "green checkmark icon";
+      }
+
+      tds.push(
+        <td className={cls_status}>
+          <i className={cls_icon}></i>{result.submitN[i]+"/"+(result.solved[i] ? result.penalty[i] : "--")}
+        </td>
+      );
     }
     return (
       <tr>
         {tds}
       </tr>
     );
-  },
-  componentDidMount: function() {
-    this.componentDidUpdate();
-  },
-  componentDidUpdate: function() {
-    var $elem = $(this.getDOMNode());
-    $elem.find("i.icon").attr('class', 'icon');
-    $elem.find(".pending:not(.solved) i.icon").attr('class', 'yellow wait icon');
-    $elem.find(".submitted:not(.pending):not(.solved) i.icon").attr('class', 'red close icon');
-    $elem.find(".solved i.icon").attr('class', 'green checkmark icon');
   }
 });
 

@@ -29,6 +29,8 @@ def parse(source):
 				team = dict()
 				team["teamID"] = int(tmp[1][4:])
 				team["name"] = tmp[2]
+				if tmp[2].find(" -") != -1:
+					team["school"], team["name"] = tmp[2].split(' - ')[:2]
 				result.append(team)
 	return result
 

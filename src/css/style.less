@@ -1,6 +1,7 @@
 body {
 	margin: 20px;
 	font-size: 1.2em;
+	overflow-x: auto;
 }
 
 #loader_container {
@@ -34,6 +35,15 @@ body {
 	}
 	td+td+td+td+td {
 		table-layout: fixed;
+		white-space: nowrap;
+	}
+	.teamName {
+		display: block;
+	}
+	.schoolName {
+		display: block;
+		font-style: italic;
+		font-size: 90%;
 	}
 	.pending:not(.solved) {
 		background: lighten(#ff0, 40%);
