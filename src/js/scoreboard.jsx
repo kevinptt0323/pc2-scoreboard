@@ -131,8 +131,11 @@ var Ranking = React.createClass({
       _status = this.props._status,
       _teams = this.props._teams;
 
+    var sum = function(arr) {
+      return arr.reduce(function(a, b) { return a+b; }, 0);
+    };
     _status.sort(function(a, b) {
-      return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty) || (a.teamID-b.teamID);
+      return (b.solvedN-a.solvedN) || (a.totalPenalty-b.totalPenalty) || (sum(b.submitN)-sum(a.submitN)) || (a.teamID-b.teamID);
     });
     ranking = [];
     for(var i=0, j=0; i<_status.length; i++) {
