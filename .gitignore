@@ -33,4 +33,5 @@ ignore/
 # Python files and configs
 # -------------------
 *.pyc
-config.py
+config*.py
+!config.sample.py
