@@ -3,8 +3,16 @@ var Scoreboard = React.createClass({
     return (
       <div>
         Current Time: <Clock />
-        <div>Scoreboard Time: {this.state.stateTime}</div>
-        <div className="ui center aligned red header">The scoreboard will be freezed after {this.state._settings.freezeTime} minutes.</div>
+        <div>Last Update: {this.state.stateTime}</div>
+        <div className="ui center aligned red header">The scoreboard will be freezed in {this.state._settings.freezeTime} minutes after contest starts.</div>
+        <table id="status_example" className="ui collapsing table">
+          <tr>
+            <td className="solved firstBlood"><i className="green checkmark icon"></i>First to solve problem</td>
+            <td className="solved"><i className="green checkmark icon"></i>Solved problem</td>
+            <td className="submitted"><i className="red close icon"></i>Attempted problem</td>
+            <td className="pending"><i className="yellow wait icon"></i>Pending judgement</td>
+          </tr>
+        </table>
         <table className="ui striped unstackable selectable table">
           <TableHeader _settings={this.state._settings} />
           <Ranking _status={this.state._status} _teams={this.state._teams} />
